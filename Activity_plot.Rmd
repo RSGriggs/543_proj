@@ -1,18 +1,100 @@
----
-title: "R Notebook"
-output: html_notebook
----
-
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
-
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+#Generates plots from Activity excel data
 
 ```{r}
-plot(cars)
+library(rio)
+library(readxl)
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+```{r}
+#establish link to git repository
+gitlink='https://github.com/RSGriggs/543_proj/raw/main/'
+#establilsh value for dataset desired
+activity='activity.xls'
+#query excel and store as value 'act'
+act=paste0(gitlink, activity)
+```
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+```{r}
+#store value as datatable
+actdata=import(act)
+```
 
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+```{r}
+# determine the number of unique values in time spent on activities
+length(unique(actdata$timespent))
+```
+```{r}
+#summarize time spent at attractions
+summary(actdata$timespent)
+```
+```{r}
+#check asymmetry
+library(DescTools)
+Skew(actdata$timespent,na.rm = T,conf.level = 0.95, ci.type = "bca",R=2500)
+```
+```{r}
+# shape
+Kurt(actdata$timespent,na.rm = T,conf.level = 0.95, ci.type = "bca",R=2500)
+```
+
+```{r}
+#ggplot
+WIDTH=10
+library(ggplot2)
+base= ggplot(actdata,aes(x = timespent))  
+h1= base + geom_histogram(binwidth = WIDTH) 
+h1 
+```
+```{r}
+h1p= base + geom_histogram(binwidth = WIDTH,aes(y=stat(density*WIDTH))) 
+h1p
+```
+```{r}
+library(scales)
+h1p=h1p+scale_y_continuous(labels = scales::percent_format())
+h1p
+```
+```{r}
+MEAN=summary(actdata$timespent)[4]
+h1+ geom_vline(xintercept = MEAN)
+```
+```{r}
+(statVals=summary(actdata$spending,digits = 3)[1:6])
+```
+```{r}
+library(magrittr)
+statVals=statVals%>%as.vector() 
+base= ggplot(actdata,aes(y = spending))  
+b1= base + geom_boxplot() 
+b1=b1 +coord_flip()
+b1=b1+ scale_y_continuous(breaks = statVals)
+b1
+```
+
+
+
+Begin code for third plot
+```{r}
+lowerT=ggplot_build(box2)$data[[1]]$ymin
+```
+
+
+
+
+
+
+```{r}
+theVAR=actdata$spending
+normals=actdata[which(theVAR >=lowerT & theVAR <= upperT),]
+```
+
+
+```{r}
+WIDTH=0.6
+baseN=ggplot(normals,
+             aes(x=Student.Teacher.Ratio)) +
+      theme_minimal() 
+histN=baseN+geom_histogram(binwidth=WIDTH)
+histN
+```
+
