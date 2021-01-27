@@ -75,26 +75,23 @@ b1
 
 Begin code for third plot
 ```{r}
-lowerT=ggplot_build(box2)$data[[1]]$ymin
+climatexls='ClimateChangeOpinion.xlsx'
+#query excel and store as value 'climate'
+climate=paste0(gitlink, climatexls)
 ```
-
-
-
-
-
 
 ```{r}
-theVAR=actdata$spending
-normals=actdata[which(theVAR >=lowerT & theVAR <= upperT),]
+#store climate value as datatable
+climatedata=import(climate)
 ```
-
 
 ```{r}
-WIDTH=0.6
-baseN=ggplot(normals,
-             aes(x=Student.Teacher.Ratio)) +
-      theme_minimal() 
-histN=baseN+geom_histogram(binwidth=WIDTH)
-histN
+#ggplot
+WIDTH=10
+library(ggplot2)
+base3 = ggplot(climatedata, aes(x = Catagorical))  
+h3= base + geom_histogram(binwidth = WIDTH) 
+h3
 ```
+
 
