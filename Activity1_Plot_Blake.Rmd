@@ -61,5 +61,4 @@ plotz5 = plotz4 + geom_hline(yintercept = 7.8,
   
 plotz5
 ```
-```
 
