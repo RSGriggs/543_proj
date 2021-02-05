@@ -6,61 +6,53 @@ library(readxl)
 ```
 
 ```{r}
+
+```
+
+
+
+```{r}
 #establish link to git repository
 gitlink='https://github.com/RSGriggs/543_proj/raw/main/'
 #establilsh value for dataset desired
 activity='activity.xls'
 #query excel and store as value 'act'
 act=paste0(gitlink, activity)
-```
-
-```{r}
 #store value as datatable
 actdata=import(act)
-```
-
-```{r}
 # determine the number of unique values in time spent on activities
 length(unique(actdata$timespent))
-```
-```{r}
 #summarize time spent at attractions
 summary(actdata$timespent)
-```
-```{r}
 #check asymmetry
 library(DescTools)
 Skew(actdata$timespent,na.rm = T,conf.level = 0.95, ci.type = "bca",R=2500)
-```
-```{r}
 # shape
 Kurt(actdata$timespent,na.rm = T,conf.level = 0.95, ci.type = "bca",R=2500)
-```
 
-```{r}
+
 #ggplot
-WIDTH=10
+#set width of columns data is broken into
+WIDTH=30
+
+
 library(ggplot2)
 base= ggplot(actdata,aes(x = timespent))  
 h1= base + geom_histogram(binwidth = WIDTH) 
 h1 
-```
-```{r}
 h1p= base + geom_histogram(binwidth = WIDTH,aes(y=stat(density*WIDTH))) 
 h1p
-```
-```{r}
 library(scales)
 h1p=h1p+scale_y_continuous(labels = scales::percent_format())
 h1p
-```
-```{r}
 MEAN=summary(actdata$timespent)[4]
 h1+ geom_vline(xintercept = MEAN)
-```
-```{r}
 (statVals=summary(actdata$spending,digits = 3)[1:6])
 ```
+
+
+-------------BEGIN CODE FOR BLOCK CHART-------------
+
 ```{r}
 library(magrittr)
 statVals=statVals%>%as.vector() 

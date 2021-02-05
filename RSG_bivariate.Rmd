@@ -1,0 +1,439 @@
+IMPORT REQUIRED LIBRARIES
+```{r}
+library(rio)
+library(readxl)
+library(magrittr)
+library(ggplot2)
+```
+DatingTimeSpent  = DriveType
+DatTime = Drivetype_mgCol
+
+DPT = driveframe
+
+
+
+```{r}
+#establish link to git repository
+gitlink='https://github.com/RSGriggs/543_proj/raw/main/'
+#establilsh value for dataset desired
+activity='activity.xls'
+#query excel and store as value 'act'
+act=paste0(gitlink, activity)
+#store value as datatable
+actdata=import(act)
+
+#get list of column headers in actdata
+names(actdata)
+
+#generate table value including required info to generate a catagorical bivariable plot showing if people drive to vairous locations
+DriveType=table(actdata$type_character,actdata$car)
+
+#Compute marginal percents
+(Drivetype_mgCol=prop.table(DriveType,
+                            margin = 2)%>%round(.,3))
+#Generate a data frame to pull plot data from
+driveframe=as.data.frame(actdata)
+names(driveframe)=c("type_character","car")
+
+driveframe$pctCol=as.data.frame(Drivetype_mgCol)[,3
+                                                 ]
+#Generate base version of plot
+drive1=ggplot(data=driveframe,
+              aes(x=type_character,
+                  y=pctCol,
+                  fill=type_character))
+drive2 = drive1 + geom_bar(stat="identity",
+                           position='dodge')
+drive2 + geom_text(position = position_dodge(),
+                               angle=90,
+                               hjust=1,
+                               aes(label=type_character))
+#call plot
+drive2
+```
+
+
+Exercise 4a
+```{r}
+# collecting the data
+link="https://github.com/EvansDataScience/data/raw/master/crime.RData"
+load(file = url(link))
+# seeing the variable names
+names(crime)
+# checking data types
+str(crime,width = 50,strict.width='cut')
+# contingency table of counts
+(PrecintDaytime=table(crime$Precinct,crime$Occurred.DayTime))
+# computing marginal percent (per column) from contingency table
+library(magrittr)
+(PrecDayti_mgCol=prop.table(PrecintDaytime,
+                            margin = 2)%>%round(.,3))
+#making a data frame from contingency table
+
+PrecDaytiDF=as.data.frame(PrecintDaytime)
+names(PrecDaytiDF)=c("precint","daytime","counts")
+
+#adding marginal percents:
+PrecDaytiDF$pctCol=as.data.frame(PrecDayti_mgCol)[,3]
+# head of data frame representing contingency table and marginals
+head(PrecDaytiDF)
+library(ggplot2)
+base1=ggplot(data=PrecDaytiDF, 
+             aes(x=daytime, y=counts,
+                 fill=precint)) # this 'aes' in legend
+
+barDodge= base1 +  geom_bar(stat="identity",
+                            position ='dodge') 
+barDodge
+# Generate chart with lables
+barDodge + geom_text(position = position_dodge(),
+                               angle=90,#angle!!
+                               hjust=1,
+                               aes(label=counts)) # AES!
+# "some more work," assuemed cleaning up formatting
+barDodge=barDodge + geom_text(position = position_dodge(0.9),
+                               angle=90,#angle!!
+                               hjust=1,
+                               aes(label=counts)) # AES!
+barDodge
+#Use a good palette
+barDodge + scale_fill_brewer(palette="Paired")
+#reorder precinct
+PrecDaytiDF$precint=factor(PrecDaytiDF$precint,
+                           levels=c("NORTH","WEST","EAST", "SOUTH","SOUTHWEST"))
+base1=ggplot(data=PrecDaytiDF, 
+             aes(x=daytime, y=counts,
+                 fill=precint)) # this 'aes' in legend
+
+barDodge= base1 +  geom_bar(stat="identity",
+                            position ='dodge') 
+barDodge=barDodge + geom_text(position = position_dodge(0.9),
+                               angle=90,#angle!!
+                               hjust=1, size=4,
+                              fontface='bold',
+                              aes(label=counts)) # AES!
+# palette with ordering
+barDodge + scale_fill_brewer(name="PRECINCT",
+                             palette="BuPu",#for order
+                               direction = -1)
+#go from dodge to tstacked bar plot
+# Stacked bar plot
+conditionColor=ifelse(PrecDaytiDF$precint%in%c("NORTH",'WEST'),'grey80','grey50')
+
+barStacked = base1 + geom_bar(stat = "identity",
+                              position = 'stack')#default
+barStacked = barStacked + geom_text(size = 5,
+                                    fontface='bold',
+                                    position = position_stack(vjust = 0.5),
+                                    color=conditionColor,
+                                    aes(label=counts))# its own AES!
+barStacked + scale_fill_brewer(palette="GnBu",
+                               direction = -1)
+#stacked percent
+# they show the marginal table above: "PrecDayti_mgCol"
+library(scales) # notice in 'percent()" below"
+
+base2=ggplot(data=PrecDaytiDF, 
+             aes(fill=precint,y=counts,x=daytime)) # changes
+
+barStackPct= base1 +  geom_bar(stat = "identity",
+                       position="fill") # you need this
+
+barStackPct= barStackPct + geom_text(size = 5,# check below:
+                             position = position_fill(vjust = 0.5),
+                             aes(label=percent(pctCol,accuracy = 0.1)))
+
+barStackPct
+
+```
+
+
+Session 4a, more complex situation
+
+
+```{r}
+# contingency table with many levels:
+
+(CrimeDay=table(crime$crimecat,crime$Occurred.DayTime))
+#making a data frame from contingency table
+
+CrimeDayDF=as.data.frame(CrimeDay)
+#renaming:
+names(CrimeDayDF)=c("crime","daytime","counts")
+#marginal
+CrimeDay_mgCol=prop.table(CrimeDay,margin = 2)
+#adding marginal
+CrimeDayDF$pctCol=as.data.frame(CrimeDay_mgCol)[,3]
+
+# result for ggplot:
+head(CrimeDayDF)
+# bad idea
+base2=ggplot(data=CrimeDayDF,
+             aes(x=daytime,y=counts,fill=crime))
+base2 + geom_bar(stat = "identity") + 
+        geom_text(size = 3, 
+                  position = position_stack(vjust = 0.5),
+                  aes(label=counts))
+# plotting a representation of contingency table:
+
+library(ggplot2)                           
+base3 = ggplot(CrimeDayDF, aes(x=daytime,y=crime)) 
+# plot value as point, size by value of percent
+tablePlot = base3 + geom_point(aes(size = pctCol*100)) 
+# add value of Percent as label
+tablePlot = tablePlot + geom_text(aes(label = percent(pctCol)),
+                                    nudge_x = 0.2,
+                                    size=3)
+tablePlot
+
+# improving previous plot
+
+tablePlot = tablePlot + theme_minimal() # less ink
+tablePlot = tablePlot + theme(legend.position="none") # no legend
+tablePlot
+
+# as usual for barplot (less info than base1)
+base4 = ggplot(CrimeDayDF, aes(x = crime, y = counts ) ) 
+
+#the bars
+bars  = base4 + geom_bar( stat = "identity" ) + theme_minimal()
+
+# bar per day time with 'facet'
+barsFa = bars + facet_grid(~ daytime) 
+
+barsFa
+
+# change the minimal theme
+
+barsFa = barsFa + theme( axis.text.x = element_text(angle = 90,
+                                                    hjust = 1,
+                                                    size=3 ))
+barsFa
+
+# similar to base4
+base5  = ggplot(CrimeDayDF, aes(x = crime,  y = pctCol ) ) 
+barsIO = base5 + geom_bar( stat = "identity" )
+barsIO = barsIO + facet_grid( ~ daytime) 
+barsIO = barsIO + coord_flip()
+
+barsIO
+
+# introducing "reorder""
+
+#crime ordered by pctcl
+base5b  = ggplot(CrimeDayDF, 
+                 aes(x = reorder(crime, pctCol), #here
+                     y = pctCol ) ) 
+
+barsIOb = base5b + geom_bar( stat = "identity" )
+barsIOb = barsIOb + facet_grid( ~ daytime) 
+barsIOb= barsIOb + coord_flip() 
+
+# something extra:
+barsIOb= barsIOb + theme(axis.text.y = element_text(size=4,angle = 45)) 
+barsIOb
+
+# heatplot
+base  = ggplot(CrimeDayDF, aes(x = daytime, 
+                               y = reorder(crime, pctCol), 
+                               fill = pctCol*100)) 
+heat = base +  geom_tile()
+
+# coloring intensity
+heat = heat +scale_fill_gradient(low = "white", 
+                                   high = "black")
+heat = heat + theme_classic()
+
+heat
+
+# improving heat plot
+
+heat = heat + labs(y="Crime", "Time of day")
+heat = heat + theme(axis.text.x = element_text(angle = 60, 
+                                               vjust = 0.6), 
+                      legend.title = element_blank(), #no leg. title 
+                      legend.position="top", 
+                      legend.direction="horizontal",
+                      legend.key.width=unit(1, "cm"),
+                      legend.key.height=unit(1, "cm")) 
+
+heat
+```
+
+SESSION 4B
+
+```{r}
+# collecting the data
+link="https://github.com/EvansDataScience/data/raw/master/crime.RData"
+load(file = url(link))
+# variables in the data:
+names(crime)
+# stats of days to report
+# notice the spread of values.
+summary(crime$DaysToReport)
+# 'order' decreasing
+
+library(magrittr) # for %>%
+crime[order(-crime$DaysToReport),c('year','DaysToReport')]%>%head(20)
+
+crime=crime[crime$year>1908,]
+
+# non missing in precinct
+crime=crime[complete.cases(crime$Precinct),]
+
+# summary: mean by groups
+aggregate(data=crime, DaysToReport~Precinct,median)
+
+# boxplot of days to report per precinct
+
+library(ggplot2)
+base=ggplot(data=crime,
+            aes(x=Precinct,y=DaysToReport))
+
+base + geom_boxplot()
+
+# using "summary" function
+tapply(crime$DaysToReport,
+       crime$Precinct, summary)
+# several boxplots, from week and above
+
+library(ggpubr)
+
+base7=ggplot(data=crime[crime$DaysToReport>=7,],
+            aes(x=Precinct,y=DaysToReport)) 
+box7=base7 + geom_boxplot() + labs(title = "week and above")
+
+base30=ggplot(data=crime[crime$DaysToReport>=30,],
+            aes(x=Precinct,y=DaysToReport))
+box30=base30 + geom_boxplot() + labs(title = "month and above")
+
+base180=ggplot(data=crime[crime$DaysToReport>=180,],
+            aes(x=Precinct,y=DaysToReport)) 
+box180=base180 + geom_boxplot() + labs(title = "half year and above")
+
+
+base365=ggplot(data=crime[crime$DaysToReport>=365,],
+            aes(x=Precinct,y=DaysToReport)) 
+box365=base365 + geom_boxplot() + labs(title = "year and above")
+
+
+
+#all in one:
+ggarrange(box7,box30,box180,box365)
+
+crimeYear=crime[crime$DaysToReport>365,]
+
+baseY=ggplot(data=crimeYear,
+            aes(x=Precinct,
+                y=DaysToReport)) 
+boxY=baseY + geom_boxplot() + labs(title = "Crimes that took longer than one year to report")
+# flipping
+boxY  + coord_flip()
+
+baseY=ggplot(data=crimeYear,
+            aes(x=reorder(Precinct,
+                          -DaysToReport,
+                          mean),
+                y=DaysToReport)) 
+boxY=baseY + geom_boxplot() + labs(title = "Crimes that took longer than one year to report")
+# flipping
+boxY  + coord_flip()
+
+baseHY=ggplot(data=crimeYear,
+            aes(x=DaysToReport)) 
+histY=baseHY + geom_histogram(aes(color=Precinct),
+                              fill=NA) 
+# flipping
+histY  
+
+histY + facet_grid(~Precinct)
+
+histY + facet_grid(Precinct~.)
+
+histY= histY + facet_grid(reorder(Precinct,
+                                  DaysToReport,
+                                  mean)~.)
+histY
+
+crimeYear[,c('Precinct', 'DaysToReport')] %>%head(20)
+
+baseME=ggplot(crimeYear, aes(x=Precinct,
+                             y=DaysToReport)) +
+        theme_classic()
+ME1=baseME + geom_point(stat="summary") 
+ME1
+
+ME2=ME1 + geom_errorbar(stat="summary") 
+ME2
+
+baseME= ggplot(crimeYear, aes(x=Precinct,
+                      y=DaysToReport)) +
+        theme_classic()
+baseME= baseME + geom_jitter(colour="blue",
+                             alpha=0.2 #transparency
+                             )
+ME=baseME + geom_point(stat="summary") +
+             geom_errorbar(stat="summary")
+ME + scale_y_continuous(breaks = c(1000,5000, 10000,15000))
+
+# introducing ggpubr
+library(ggpubr)
+
+base = ggline(data=crimeYear,x = "Precinct", 
+       y = "DaysToReport",
+       add = 'mean_ci')
+base + geom_jitter(colour="blue",
+                   alpha=0.2)
+
+crimeYear$Years_to_Report=crimeYear$DaysToReport/365
+base = ggline(data=crimeYear,x = "Precinct", 
+       y = "Years_to_Report",
+       add = 'mean_ci')
+base + geom_jitter(colour="blue",
+                   alpha=0.2)
+
+baseINV=ggplot(crimeYear, aes(x=Precinct,
+                             y=Years_to_Report)) +
+        theme_classic()
+
+#point for each stat
+MINs=baseINV + geom_point(stat="summary",fun='max') 
+MAXMINs=MINs + geom_point(stat="summary",fun='min',
+                          color='red') 
+MxMnMDs=MAXMINs+ geom_point(stat="summary",
+                            fun='median',
+                            color='blue') 
+# logarithmic scale..custom breaks
+MxMnMDs + scale_y_log10(breaks=c(50,40,30,5,1))
+
+# vector of colors named as stats:
+myFunCols=c(Max='black',Min='blue',Median='purple')
+
+# plotting
+baseINV=ggplot(crimeYear, aes(x=Precinct,
+                             y=Years_to_Report)) +
+        theme_classic()
+# points with AESthetics:
+MINs=baseINV + geom_point(stat="summary",fun='max',
+                          aes(color="Max")) 
+MAXMINs=MINs + geom_point(stat="summary",fun='min',
+                          aes(color="Min")) 
+MxMnMDs=MAXMINs+ geom_point(stat="summary",fun='median',
+                            aes(color="Median")) 
+MxMnMDs= MxMnMDs + scale_y_log10(breaks=c(50,40,30,5,1))
+
+# customizing legend:
+MxMnMDs= MxMnMDs + scale_colour_manual(values=myFunCols,
+                                       name="Stats") 
+MxMnMDs
+
+MxMnMDsL=MxMnMDs+ geom_line(stat="summary",fun='max',
+                            aes(group=1,color="Max"))
+MxMnMDsL=MxMnMDsL+ geom_line(stat="summary",fun='min',
+                            aes(group=1,color="Min"))
+MxMnMDsL=MxMnMDsL+ geom_line(stat="summary",fun='median',
+                            aes(group=1,color="Median")) 
+MxMnMDsL
+```
+
+
