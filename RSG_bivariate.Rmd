@@ -21,33 +21,27 @@ activity='activity.xls'
 act=paste0(gitlink, activity)
 #store value as datatable
 actdata=import(act)
-
 #get list of column headers in actdata
 names(actdata)
-
 #generate table value including required info to generate a catagorical bivariable plot showing if people drive to vairous locations
-DriveType=table(actdata$type_character,actdata$car)
-
+DriveType=table(actdata$venue,actdata$Pct_Drive)
 #Compute marginal percents
 (Drivetype_mgCol=prop.table(DriveType,
-                            margin = 2)%>%round(.,3))
+                            margin = 2)%>%round(.,1))
 #Generate a data frame to pull plot data from
-driveframe=as.data.frame(actdata)
-names(driveframe)=c("type_character","car")
+driveframe=as.data.frame(DriveType)
+names(driveframe)=c("Venue","Percent Drivers")
 
-driveframe$pctCol=as.data.frame(Drivetype_mgCol)[,3
-                                                 ]
+#Cut code return here
+driveframe$pctCol=as.data.frame(Drivetype_mgCol)[,2]
 #Generate base version of plot
 drive1=ggplot(data=driveframe,
-              aes(x=type_character,
-                  y=pctCol,
-                  fill=type_character))
+              aes(x="Venue",
+                  y="Percent Drivers",
+                  fill=venue))
 drive2 = drive1 + geom_bar(stat="identity",
                            position='dodge')
-drive2 + geom_text(position = position_dodge(),
-                               angle=90,
-                               hjust=1,
-                               aes(label=type_character))
+
 #call plot
 drive2
 ```
