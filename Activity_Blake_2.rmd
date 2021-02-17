@@ -1,0 +1,16 @@
+```{r}
+library(rio)
+library(readxl)
+
+location="https://github.com/RSGriggs/543_proj/raw/main/"
+file="activity.xls"
+filelink=paste0(location,file)
+
+ActivityData=import(filelink)
+```
+```{r}
+summary(ActivityData)
+```
+```{r}
+names(ActivityData)
+```
