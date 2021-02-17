@@ -15,7 +15,7 @@ summary(ActivityData)
 names(ActivityData)
 ```
 ```{r}
-(DatingTimespent=table(ActivityData$type,ActivityData$dating))
+(DatingTimespent=table(ActivityData$type_character,ActivityData$dating))
 ```
 ```{r}
 library(magrittr)
@@ -46,11 +46,14 @@ Dodge1
 ```{r}
 Dodge2 = Dodge1 + labs(title=NULL,
                      x = "Relationship Status", 
-                     y = "Visitation Percent",
+                     y = NULL,
                      caption = NULL)
 Dodge2
 ```
-```{r}
-Dodge2 + scale_fill_brewer(palette="Set1")
-```
 
+```{r}
+ActStack = Dodge2 + geom_bar(stat = "Identity",
+                              position = 'stack')
+
+ActStack + scale_fill_brewer(palette="Set1")
+```
