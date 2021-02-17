@@ -24,7 +24,7 @@ library(magrittr)
 ```
 ```{r}
 DTP=as.data.frame(DatingTimespent)
-names(DTP)=c("Location","Single","Dating")
+names(DTP)=c("Location","Relationship","Dating")
 ```
 ```{r}
 DTP$pctCol=as.data.frame(DatTime)[,3]
@@ -32,14 +32,25 @@ DTP$pctCol=as.data.frame(DatTime)[,3]
 ```{r}
 head(DTP)
 ```
+
 ```{r}
 library(ggplot2)
 basea=ggplot(data=DTP, 
-             aes(x=Single, y=pctCol,
-                 fill=Location))
+             aes(x=Relationship, y=pctCol,
+                 fill=Location,))
 
 Dodge1= basea +  geom_bar(stat="identity",
                             position ='dodge') 
 Dodge1
+```
+```{r}
+Dodge2 = Dodge1 + labs(title=NULL,
+                     x = "Relationship Status", 
+                     y = "Visitation Percent",
+                     caption = NULL)
+Dodge2
+```
+```{r}
+Dodge2 + scale_fill_brewer(palette="Set1")
 ```
 
