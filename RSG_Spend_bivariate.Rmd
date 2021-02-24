@@ -39,7 +39,7 @@ SpendingFrame$pct=pctDF$Freq
 #generate table value including required info to generate a categorical bivariable plot destination by party size
 Destspend=table(spenddata$Destination, spenddata$Party_Size, spenddata$Avg_Spending)
 SpendingFrame=as.data.frame(Destspend)
-names(SpendingFrame)=c("Destination","Party SIze", "Average Spending")
+names(SpendingFrame)=c("Destination","Party Size", "Average Spending")
 #Add % data
 SpendingFrame
 ```
