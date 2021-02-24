@@ -1,0 +1,69 @@
+IMPORT REQUIRED LIBRARIES
+```{r}
+library(rio)
+library(readxl)
+library(magrittr)
+library(ggplot2)
+```
+
+IMPORT DATA
+```{r}
+#establish link to git repository
+gitlink='https://github.com/RSGriggs/543_proj/raw/main/'
+#establilsh value for dataset desired
+spend='Activity_spending.xlsx'
+#query excel and store as value 'act'
+spend2=paste0(gitlink, spend)
+#store value as datatable
+spenddata=import(spend2)
+```
+INSPECT DATA
+```{r}
+#get list of column headers in actdata
+names(spenddata)
+```
+
+HI BLAKE
+```{r}
+# checking data types
+str(spend,width = 50,strict.width='cut')
+```
+BUILD DATA FRAME
+```{R}
+#generate table value including required info to generate a categorical bivariable plot destination by party size
+VenSpend=table(actdata$type_character,actdata$spending, actdata$number_people)
+SpendingFrame=as.data.frame(VenSpend)
+names(SpendingFrame)=c("Destination","Spending", "number_people")
+#Compute marginal percents
+VenSpend_mgCol=prop.table(VenSpend,
+                            margin = 2)%>%round(.,3)
+pctDF=as.data.frame(VenSpend_mgCol)
+# put counts in DF
+
+SpendingFrame$pct=pctDF$Freq
+
+#Add % data
+SpendingFrame
+```
+
+```{R}
+#Generate base version of plot
+party1=ggplot(data=SpendingFrame,
+              aes(x=number_people,
+                  y=Spending,
+                  fill=Destination)) +
+              geom_bar(stat="summary",
+                      fun = 'mean',
+                      position='dodge') +
+
+                     labs(title = "Spending by Venue",
+                          subtitle = "Catagorical and Numerical Plot",
+                          tag = "check tag",
+                          y = "$ Spent",
+                          x = "Number of People in Party") +
+#change color
+              scale_fill_brewer(palette = "Pastel2" )
+#add labels
+#call plot
+party1
+```
