@@ -14,11 +14,14 @@ library(sf)
 ```{r}
 WorldMap=read_sf(MapFile)
 ```
+```{r}
+str(WorldMap)
+```
 
 ```{r}
-mapWorldVars=merge(mapWorld, #map first
+WorldMapVars=merge(WorldMap,
                    CSVData, 
-                   by='ISO3')
+                   by='NAME')
 ```
 ```{r}
 library(ggplot2)
@@ -27,4 +30,10 @@ B1=ggplot(data=WorldMap) + geom_sf(fill='grey90',
                                      color=NA) + theme_classic()
 
 B1
+```
+```{r}
+FillMap= B1 + geom_sf(data=WorldMapVars,
+                       aes(fill=Data),
+                       color=NA)
+FillMap
 ```
