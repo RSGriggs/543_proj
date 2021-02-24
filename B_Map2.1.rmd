@@ -37,6 +37,12 @@ CMap= T1 + geom_sf(data=MapVariables,
 CMap
 ```
 ```{r}
-CMap + scale_fill_gradient(low = 'yellow',
+CMap2 =CMap + scale_fill_gradient(low = 'yellow',
                              high= 'blue')
+CMap2
+```
+```{r}
+CMap3 = CMap2 + theme_void()
+
+CMap3
 ```
