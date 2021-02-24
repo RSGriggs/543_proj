@@ -1,0 +1,22 @@
+```{r}
+CSVLink='https://github.com/Visual-Analytics-Project-UW-EvansSchool/mergedData/raw/main/merged_data.csv'
+
+dataCSV=read.csv(linkCSV)
+```
+
+```{r}
+MapFile='https://github.com/RSGriggs/543_proj/raw/main/gz_2010_us_040_00_5m.json'
+library(sf)
+```
+```{r}
+WorldMap=read_sf(MapFile)
+```
+```{r}
+head(WorldMap)
+```
+```{r}
+mapWorldVars=merge(WorldMap, #map first
+                   dataCSV, 
+                   by='ISO3')
+```
+
