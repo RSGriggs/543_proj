@@ -46,3 +46,10 @@ CMap3 = CMap2 + theme_void()
 
 CMap3
 ```
+```{r}
+CMap4 = CMap3 + labs(title="Percent of Children Who Speak a Language Other than English at Home",
+                     x = NULL, 
+                     y = NULL,
+                     caption = NULL)
+CMap4
+```

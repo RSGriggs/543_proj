@@ -1,0 +1,63 @@
+```{r}
+library(rio)
+library(readxl)
+
+location="https://github.com/RSGriggs/543_proj/raw/main/"
+file="WashingtonByCounty2.xls"
+filelink=paste0(location,file)
+
+data2=import(filelink)
+
+summary(data2$AKNUE006)
+
+
+data2$AKNUE006=cut(data2$AKNUE006,
+                          breaks = c(0,2500,5000,10000,15000,159380),
+                          labels = c("0-2500","2501-5000","5001-10000","10001-15000","More Than 15000"))
+
+table(data2$AKNUE006)
+
+plotW=table(data2$AKNUE006)
+
+FreqW=as.data.frame(plotW)
+names(FreqW)=c("Adolescent_Males","County_Count")
+FreqW
+
+library(ggplot2)
+
+base= ggplot(data = FreqW, 
+             aes(x = Adolescent_Males,
+                 y = County_Count)) 
+
+plotz = base + geom_bar(fill ="blue",
+                        stat = 'identity') 
+plotz
+
+titleText='Adolescent Males Density Distribution by Washington Counties'
+sourceText='Source: American Community Survey'
+
+plotzz = plotz + labs(title=titleText,
+                     x = 'Number of Adolescent Males (6-18 Years)', 
+                     y = 'Number of Counties',
+                     caption = sourceText)
+plotzz
+
+library(scales)
+
+plotz3 = plotzz + scale_y_continuous(breaks=c(0,2,4,6,8,10,12),
+                                   limits = c(0, 12),
+                                   labels=unit_format(unit = NULL, accuracy = 1))
+                                  
+plotz3
+
+plotz4 = plotz3 + theme(plot.caption = element_text(hjust = 1), 
+                      plot.title = element_text(hjust = 0.5))
+
+plotz5 = plotz4 + geom_hline(yintercept = 7.8,
+                           linetype="dashed", 
+                           size=1.5,
+                           alpha=0.5,
+                           color="black") + annotate("text",x=3.5, y=7.8, label= "Average Distribution",vjust= -1.5)
+  
+plotz5
+```
