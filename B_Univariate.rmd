@@ -1,6 +1,8 @@
 ```{r}
 library(rio)
 library(readxl)
+library(ggplot2)
+library(scales)
 
 location="https://github.com/RSGriggs/543_proj/raw/main/"
 file="WashingtonByCounty2.xls"
@@ -23,7 +25,6 @@ FreqW=as.data.frame(plotW)
 names(FreqW)=c("Adolescent_Males","County_Count")
 FreqW
 
-library(ggplot2)
 
 base= ggplot(data = FreqW, 
              aes(x = Adolescent_Males,
@@ -42,7 +43,6 @@ plotzz = plotz + labs(title=titleText,
                      caption = sourceText)
 plotzz
 
-library(scales)
 
 plotz3 = plotzz + scale_y_continuous(breaks=c(0,2,4,6,8,10,12),
                                    limits = c(0, 12),
