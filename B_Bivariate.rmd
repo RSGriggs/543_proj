@@ -1,57 +1,45 @@
 ```{r}
 library(rio)
 library(readxl)
+library(ggplot2)
 
 location="https://github.com/RSGriggs/543_proj/raw/main/"
 file="activity.xls"
 filelink=paste0(location,file)
 
 ActivityData=import(filelink)
-```
-```{r}
+
 summary(ActivityData)
-```
-```{r}
+
 names(ActivityData)
-```
-```{r}
+
 (DatingTimespent=table(ActivityData$type_character,ActivityData$dating))
-```
-```{r}
+
 library(magrittr)
 (DatTime=prop.table(DatingTimespent,
                             margin = 2)%>%round(.,2))
-```
-```{r}
+
 DTP=as.data.frame(DatingTimespent)
 names(DTP)=c("Location","Relationship","Dating")
-```
-```{r}
-DTP$pctCol=as.data.frame(DatTime)[,3]
-```
-```{r}
-head(DTP)
-```
 
-```{r}
-library(ggplot2)
+DTP$pctCol=as.data.frame(DatTime)[,3]
+
+head(DTP)
+
+
 basea=ggplot(data=DTP, 
              aes(x=Relationship, y=pctCol,
                  fill=Location,))
 
 Dodge1= basea +  geom_bar(stat="identity",
                             position ='dodge') 
-Dodge1
-```
-```{r}
+
 Dodge2 = Dodge1 + labs(title=NULL,
                      x = "Relationship Status", 
                      y = NULL,
                      caption = NULL)
 Dodge2
-```
 
-```{r}
 ActStack = Dodge2 + geom_bar(stat = "Identity",
                               position = 'stack')
 
