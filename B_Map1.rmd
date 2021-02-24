@@ -1,7 +1,10 @@
 ```{r}
-CSVLink='https://github.com/Visual-Analytics-Project-UW-EvansSchool/mergedData/raw/main/merged_data.csv'
+CSVLink='https://github.com/RSGriggs/543_proj/raw/main/ChildrenLanguageAtHome.csv'
 
-dataCSV=read.csv(linkCSV)
+CSVData=read.csv(CSVLink)
+```
+```{r}
+str(CSVData)
 ```
 
 ```{r}
@@ -11,12 +14,17 @@ library(sf)
 ```{r}
 WorldMap=read_sf(MapFile)
 ```
+
 ```{r}
-head(WorldMap)
-```
-```{r}
-mapWorldVars=merge(WorldMap, #map first
-                   dataCSV, 
+mapWorldVars=merge(mapWorld, #map first
+                   CSVData, 
                    by='ISO3')
 ```
+```{r}
+library(ggplot2)
 
+B1=ggplot(data=WorldMap) + geom_sf(fill='grey90',
+                                     color=NA) + theme_classic()
+
+B1
+```
