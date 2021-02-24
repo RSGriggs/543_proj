@@ -1,0 +1,42 @@
+```{r}
+TestMapFile='https://github.com/RSGriggs/543_proj/raw/main/us-states.json'
+library(sf)
+```
+```{r}
+TestMap=read_sf(TestMapFile)
+```
+```{r}
+str(TestMap)
+```
+```{r}
+CSVLink='https://github.com/RSGriggs/543_proj/raw/main/ChildrenLanguageAtHome.csv'
+
+CSVData=read.csv(CSVLink)
+```
+```{r}
+str(CSVData)
+```
+
+```{r}
+library(ggplot2)
+
+T1=ggplot(data=TestMap) + geom_sf(fill='grey90',
+                                     color=NA) + theme_classic()
+
+T1
+```
+```{r}
+MapVariables=merge(TestMap,
+                   CSVData, 
+                   by='name')
+```
+```{r}
+CMap= T1 + geom_sf(data=MapVariables,
+                       aes(fill=Data),
+                       color=NA)
+CMap
+```
+```{r}
+CMap + scale_fill_gradient(low = 'yellow',
+                             high= 'blue')
+```

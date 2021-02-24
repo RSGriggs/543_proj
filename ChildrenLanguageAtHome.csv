@@ -1,14 +1,14 @@
-﻿LocationType,Location,Data
+﻿LocationType,name,Data
 State,Alabama,0.08
 State,Alaska,0.13
 State,Arizona,0.28
-State,Arkansas,0.1
+State,Arkansas,0.10
 State,California,0.43
 State,Connecticut,0.22
 State,Colorado,0.19
 State,District of Columbia,0.17
 State,Delaware,0.17
-State,Florida,0.3
+State,Florida,0.30
 State,Georgia,0.16
 State,Hawaii,0.22
 State,Idaho,0.11
@@ -38,10 +38,10 @@ State,Ohio,0.08
 State,Oklahoma,0.13
 State,Pennsylvania,0.13
 State,Oregon,0.19
-State,South Carolina,0.1
+State,South Carolina,0.10
 State,Rhode Island,0.24
 State,South Dakota,0.05
-State,Tennessee,0.1
+State,Tennessee,0.10
 State,Texas,0.35
 State,Utah,0.14
 State,Virginia,0.17
@@ -50,3 +50,4 @@ State,West Virginia,0.02
 State,Washington,0.23
 State,Wisconsin,0.11
 State,Wyoming,0.07
+State,Puerto Rico,0.96
