@@ -22,18 +22,11 @@ INSPECT DATA
 #get list of column headers in actdata
 names(spenddata)
 ```
-
-HI BLAKE
 ```{r}
 # checking data types
-str(spend,width = 50,strict.width='cut')
+str(spenddata,width = 50,strict.width='cut')
 ```
 BUILD DATA FRAME
-```{R}
-#generate table value including required info to generate a categorical bivariable plot destination by party size
-VenSpend=table(actdata$type_character,actdata$spending, actdata$number_people)
-SpendingFrame=as.data.frame(VenSpend)
-names(SpendingFrame)=c("Destination","Spending", "number_people")
 #Compute marginal percents
 VenSpend_mgCol=prop.table(VenSpend,
                             margin = 2)%>%round(.,3)
@@ -42,6 +35,11 @@ pctDF=as.data.frame(VenSpend_mgCol)
 
 SpendingFrame$pct=pctDF$Freq
 
+```{R}
+#generate table value including required info to generate a categorical bivariable plot destination by party size
+Destspend=table(spenddata$Destination, spenddata$Party_Size, spenddata$Avg_Spending)
+SpendingFrame=as.data.frame(Destspend)
+names(SpendingFrame)=c("Destination","Party SIze", "Average Spending")
 #Add % data
 SpendingFrame
 ```
@@ -52,7 +50,7 @@ party1=ggplot(data=SpendingFrame,
               aes(x=number_people,
                   y=Spending,
                   fill=Destination)) +
-              geom_bar(stat="summary",
+              geom_bar(stat="identity",
                       fun = 'mean',
                       position='dodge') +
 
