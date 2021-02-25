@@ -26,42 +26,41 @@ names(spenddata)
 # checking data types
 str(spenddata,width = 50,strict.width='cut')
 ```
-BUILD DATA FRAME
-#Compute marginal percents
-VenSpend_mgCol=prop.table(VenSpend,
-                            margin = 2)%>%round(.,3)
-pctDF=as.data.frame(VenSpend_mgCol)
-# put counts in DF
-
-SpendingFrame$pct=pctDF$Freq
-
-```{R}
-#generate table value including required info to generate a categorical bivariable plot destination by party size
-Destspend=table(spenddata$Destination, spenddata$Party_Size, spenddata$Avg_Spending)
-SpendingFrame=as.data.frame(Destspend)
-names(SpendingFrame)=c("Destination","Party Size", "Average Spending")
-#Add % data
+```{r}
+SpendingFrame=as.data.frame.matrix(spenddata)
 SpendingFrame
 ```
 
+
+BUILD DATA FRAME
+#```{R}
+#generate table
+Destspend=table(spenddata$Destination, spenddata$Party_Size, spenddata$Avg_Spending)
+#generate data frame from table
+SpendingFrame=as.data.frame(Destspend)
+names(SpendingFrame)=c("Destination","Party_Size", "Average_Spending")
+#Add % data
+SpendingFrame
+#```
+
 ```{R}
 #Generate base version of plot
-party1=ggplot(data=SpendingFrame,
-              aes(x=number_people,
-                  y=Spending,
+spend1=ggplot(data=SpendingFrame,
+                  aes(x=Party_Size,
+                  y=Avg_Spending,
                   fill=Destination)) +
               geom_bar(stat="identity",
                       fun = 'mean',
                       position='dodge') +
 
-                     labs(title = "Spending by Venue",
+                     labs(title = "Average Spending by Venue",
                           subtitle = "Catagorical and Numerical Plot",
                           tag = "check tag",
-                          y = "$ Spent",
+                          y = "Average $ Spent Per person",
                           x = "Number of People in Party") +
 #change color
               scale_fill_brewer(palette = "Pastel2" )
 #add labels
 #call plot
-party1
+spend1
 ```
