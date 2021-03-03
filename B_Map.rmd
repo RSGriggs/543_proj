@@ -17,9 +17,6 @@ CSVData=read.csv(CSVLink)
 str(CSVData)
 
 
-
-
-
 T1=ggplot(data=TestMap) + geom_sf(fill='grey90',
                                      color=NA) + theme_classic()
 
@@ -57,5 +54,10 @@ CMap5 = CMap4 + theme(plot.caption = element_text(hjust = 1),
                       plot.title = element_text(hjust = 0.5))
 
 CMap5
+
+CMap6 = CMap5%>%ggplotly()
+
+CMap6
 ```
+
 

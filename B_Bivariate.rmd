@@ -43,5 +43,7 @@ Dodge2
 ActStack = Dodge2 + geom_bar(stat = "Identity",
                               position = 'stack')
 
-ActStack + scale_fill_brewer(palette="Set1")
+Stack1 = ActStack + scale_fill_brewer(palette="Set1")
+
+Stack1
 ```
