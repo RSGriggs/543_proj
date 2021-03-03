@@ -1,0 +1,51 @@
+#Generates plots from Activity excel data
+
+```{r}
+library(rio)
+library(readxl)
+library(scales)
+```
+
+```{r}
+
+```
+
+
+
+```{r}
+#establish link to git repository
+gitlink='https://github.com/RSGriggs/543_proj/raw/main/'
+#establilsh value for dataset desired
+activity='activity.xls'
+#query excel and store as value 'act'
+act=paste0(gitlink, activity)
+#store value as datatable
+actdata=import(act)
+# determine the number of unique values in time spent on activities
+length(unique(actdata$timespent))
+#summarize time spent at attractions
+summary(actdata$timespent)
+#check asymmetry
+library(DescTools)
+Skew(actdata$timespent,na.rm = T,conf.level = 0.95, ci.type = "bca",R=2500)
+# shape
+Kurt(actdata$timespent,na.rm = T,conf.level = 0.95, ci.type = "bca",R=2500)
+```
+
+#ggplot
+```{r}
+#set width of column
+WIDTH=15
+time1= ggplot(actdata,aes(x=timespent)) +
+  labs(title = "Time spent at public attractions.",
+       y = "Percent Visitors",
+       x = "Minutes spent at attraction")
+time1
+time2= time1 + geom_histogram(binwidth = WIDTH,aes(y=stat(density*WIDTH)))
+time2
+time3= time2 + scale_y_continuous(labels = scales::percent_format())
+time3
+MEAN=summary(actdata$timespent)[4]
+time4= time2 + geom_vline(xintercept = MEAN)
+time4
+```
