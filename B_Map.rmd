@@ -4,11 +4,9 @@ library(sf)
 
 TestMapFile='https://github.com/RSGriggs/543_proj/raw/main/us-states.json'
 
-
 TestMap=read_sf(TestMapFile)
 
 str(TestMap)
-
 
 CSVLink='https://github.com/RSGriggs/543_proj/raw/main/ChildrenLanguageAtHome.csv'
 

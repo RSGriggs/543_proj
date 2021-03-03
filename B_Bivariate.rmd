@@ -2,6 +2,7 @@
 library(rio)
 library(readxl)
 library(ggplot2)
+library(magrittr)
 
 location="https://github.com/RSGriggs/543_proj/raw/main/"
 file="activity.xls"
@@ -15,7 +16,6 @@ names(ActivityData)
 
 (DatingTimespent=table(ActivityData$type_character,ActivityData$dating))
 
-library(magrittr)
 (DatTime=prop.table(DatingTimespent,
                             margin = 2)%>%round(.,2))
 
@@ -25,7 +25,6 @@ names(DTP)=c("Location","Relationship","Dating")
 DTP$pctCol=as.data.frame(DatTime)[,3]
 
 head(DTP)
-
 
 basea=ggplot(data=DTP, 
              aes(x=Relationship, y=pctCol,
@@ -40,10 +39,23 @@ Dodge2 = Dodge1 + labs(title=NULL,
                      caption = NULL)
 Dodge2
 
-ActStack = Dodge2 + geom_bar(stat = "Identity",
+BiTitle='Leisure Location by Relationship Status'
+
+Dodge3 = Dodge2 + labs(title=BiTitle,
+                     x = NULL, 
+                     y = NULL,
+                     caption = NULL)
+
+Dodge4 = Dodge3 + theme(plot.caption = element_text(hjust = 1), 
+                      plot.title = element_text(hjust = 0.5))
+
+
+ActStack = Dodge4 + geom_bar(stat = "Identity",
                               position = 'stack')
 
 Stack1 = ActStack + scale_fill_brewer(palette="Set1")
 
 Stack1
 ```
+
+
