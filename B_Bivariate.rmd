@@ -5,7 +5,7 @@ library(ggplot2)
 library(magrittr)
 
 location="https://github.com/RSGriggs/543_proj/raw/main/"
-file="activity.xls"
+file="activitya.xls"
 filelink=paste0(location,file)
 
 ActivityData=import(filelink)
@@ -14,7 +14,7 @@ summary(ActivityData)
 
 names(ActivityData)
 
-(DatingTimespent=table(ActivityData$type_character,ActivityData$dating))
+(DatingTimespent=table(ActivityData$type_character,ActivityData$datinga))
 
 (DatTime=prop.table(DatingTimespent,
                             margin = 2)%>%round(.,2))
