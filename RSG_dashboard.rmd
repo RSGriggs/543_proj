@@ -1,0 +1,129 @@
+```{r setup, include=FALSE}
+#imoprt libraries
+library(ggplot2)
+library(plotly)
+library(RColorBrewer)
+library(leaflet)
+library(rio)
+library(leafsync)
+library(sf)
+library(flexdashboard)
+
+
+############# CHART A CODE
+
+gitlink='https://github.com/RSGriggs/543_proj/raw/main/'
+#establilsh value for dataset desired
+spend='Activity_spending.xlsx'
+#query excel and store as value 'act'
+spend2=paste0(gitlink, spend)
+#store value as datatable
+spenddata=import(spend2)
+#generate data frame
+SpendingFrame=as.data.frame.matrix(spenddata)
+#Generate base version of plot
+spend1=ggplot(data=SpendingFrame,
+                  aes(x=Party_Size,
+                  y=Avg_Spending,
+                  fill=Destination)) +
+              geom_bar(stat="identity",
+                      fun = 'mean',
+                      position='dodge') +
+
+                     labs(title = "Average Spending by Venue",
+                          subtitle = "Catagorical and Numerical Plot",
+                          tag = "check tag",
+                          y = "Average $ Spent Per person",
+                          x = "Number of People in Party") +
+#change color
+              scale_fill_brewer(palette = "Pastel2" )
+
+
+############ CHART B CODE
+
+
+#establish link to git repository
+gitlink='https://github.com/RSGriggs/543_proj/raw/main/'
+#establilsh value for dataset desired
+activity='activity.xls'
+#query excel and store as value 'act'
+act=paste0(gitlink, activity)
+#store value as datatable
+actdata=import(act)
+# determine the number of unique values in time spent on activities
+length(unique(actdata$timespent))
+#summarize time spent at attractions
+summary(actdata$timespent)
+#check asymmetry
+library(DescTools)
+Skew(actdata$timespent,na.rm = T,conf.level = 0.95, ci.type = "bca",R=2500)
+# shape
+Kurt(actdata$timespent,na.rm = T,conf.level = 0.95, ci.type = "bca",R=2500)
+#set width of column
+WIDTH=15
+time1= ggplot(actdata,aes(x=timespent)) +
+  labs(title = "Time spent at public attractions.",
+       y = "Percent Visitors",
+       x = "Minutes spent at attraction")
+time2= time1 + geom_histogram(binwidth = WIDTH,aes(y=stat(density*WIDTH)))
+time3= time2 + scale_y_continuous(labels = scales::percent_format())
+MEAN=summary(actdata$timespent)[4]
+time4= time2 + geom_vline(xintercept = MEAN)
+
+
+############# CHART C CODE
+
+
+TestMapFile='https://github.com/RSGriggs/543_proj/raw/main/us-states.json'
+TestMap=read_sf(TestMapFile)
+str(TestMap)
+#load merge data set 
+CSVLink='https://github.com/RSGriggs/543_proj/raw/main/Smithsfavoritestates.csv'
+CSVData=read.csv(CSVLink)
+str(CSVData)
+T1=ggplot(data=TestMap) + geom_sf(fill='grey90',
+                                     color=NA) + theme_classic()
+                                     MapVariables=merge(TestMap,
+                   CSVData, 
+                   by='name')
+
+SMap= T1 + geom_sf(data=MapVariables,
+                       aes(fill=Data),
+                       color=NA)
+SMap2 = SMap + scale_fill_gradient(low = 'gold',
+                             high= 'black')
+SMap3 = SMap2 + theme_void()
+SMap4 = SMap3 + labs(title="Smith Rates the U.S. States by Arbitrary Preference.",
+                     subtitle = 'The best are the brightest.',
+                     x = NULL, 
+                     y = NULL,
+                     caption = 'R. Smith Griggs')
+SMap5 = SMap4 + theme(plot.caption = element_text(hjust = 1), 
+                      plot.title = element_text(hjust = 0.5))
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+spend1
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+time4
+```
+
+### Chart C
+
+```{r}
+SMap5
+```
+
+
