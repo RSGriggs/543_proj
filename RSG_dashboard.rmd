@@ -1,3 +1,13 @@
+---
+title: "Dashboards at EVANS UW"
+author: "Great student"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    social: menu
+    source_code: embed
+---
+
 ```{r setup, include=FALSE}
 #imoprt libraries
 library(ggplot2)
@@ -32,7 +42,6 @@ spend1=ggplot(data=SpendingFrame,
 
                      labs(title = "Average Spending by Venue",
                           subtitle = "Catagorical and Numerical Plot",
-                          tag = "check tag",
                           y = "Average $ Spent Per person",
                           x = "Number of People in Party") +
 #change color
@@ -102,26 +111,25 @@ SMap5 = SMap4 + theme(plot.caption = element_text(hjust = 1),
                       plot.title = element_text(hjust = 0.5))
 ```
 
-Column {data-width=650}
+Column {data-width=200}
 -----------------------------------------------------------------------
 
-### Chart A
+### Univariate
 
 ```{r}
 spend1
 ```
 
-Column {data-width=350}
------------------------------------------------------------------------
 
-### Chart B
+### Multivariate
 
 ```{r}
 time4
 ```
 
-### Chart C
-
+Row {data-width=400}
+-----------------------------------------------------------------------
+### Map
 ```{r}
 SMap5
 ```
