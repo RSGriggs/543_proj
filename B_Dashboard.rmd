@@ -141,24 +141,22 @@ Stack1 = ActStack + scale_fill_brewer(palette="Set1")
 Stack2 =Stack1 + geom_text(size = 5,fontface='bold',position = position_stack(vjust = 0.5),aes(label=Dating))
 
 ### Map
-TestMapFile='https://github.com/RSGriggs/543_proj/raw/main/us-states.json'
+TestMapFile='https://github.com/RSGriggs/543_proj/raw/main/us-states1.json'
 
 TestMap=read_sf(TestMapFile)
 
 str(TestMap)
 
-CSVLink='https://github.com/RSGriggs/543_proj/raw/main/ChildrenLanguageAtHome.csv'
+CSVLink='https://github.com/RSGriggs/543_proj/raw/main/ChildrenLanguageAtHome1.csv'
 
 CSVData=read.csv(CSVLink)
 
 str(CSVData)
 
-
 T1=ggplot(data=TestMap) + geom_sf(fill='grey90',
                                      color=NA) + theme_classic()
 
 T1
-
 
 MapVariables=merge(TestMap,
                    CSVData, 
@@ -169,16 +167,13 @@ CMap= T1 + geom_sf(data=MapVariables,
                        color=NA)
 CMap
 
-
 CMap2 =CMap + scale_fill_gradient(low = 'yellow',
                              high= 'blue')
 CMap2
 
-
 CMap3 = CMap2 + theme_void()
 
 CMap3
-
 
 CMap4 = CMap3 + labs(title="% of Children Who Speak a Language Other than English at Home",
                      x = NULL, 
@@ -186,9 +181,10 @@ CMap4 = CMap3 + labs(title="% of Children Who Speak a Language Other than Englis
                      caption = NULL)
 CMap4
 
-
 CMap5 = CMap4 + theme(plot.caption = element_text(hjust = 1), 
                       plot.title = element_text(hjust = 0.5))
+
+CMap5
 ```
 
 Column {data-width=250}
