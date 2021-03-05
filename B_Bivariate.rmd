@@ -52,7 +52,7 @@ Dodge4 = Dodge3 + theme(axis.ticks.y = element_blank(),
                                 axis.title.y = element_blank(),
                                 axis.line.y = element_blank(),
                                 axis.text.y = element_blank())
-
+Dodge4
 
 ActStack = Dodge4 + geom_bar(stat = "Identity",
                               position = 'stack')
@@ -60,12 +60,16 @@ ActStack = Dodge4 + geom_bar(stat = "Identity",
 Stack1 = ActStack + scale_fill_brewer(palette="Set1")
 
 Stack1
-```
-```{r}
-Stack2 = Stack1 + geom_text(vjust=0.5,
-                          size = 5,
-                          aes(y = pctCol,
-                              label = pctCol))
+
+ActStack = baseb + theme(axis.ticks.y = element_blank(),
+                                axis.title.y = element_blank(),
+                                axis.line.y = element_blank(),
+                                axis.text.y = element_blank()) + geom_bar(stat = "Identity",
+                              position = 'stack')
+
+Stack1 = ActStack + scale_fill_brewer(palette="Set1")
+
+Stack2 =Stack1 + geom_text(size = 5,fontface='bold',position = position_stack(vjust = 0.5),aes(label=Dating))
 
 Stack2
 ```
