@@ -100,7 +100,7 @@ T1=ggplot(data=TestMap) + geom_sf(fill='grey90',
                    by='name')
 
 SMap= T1 + geom_sf(data=MapVariables,
-                       aes(fill=Preference_Rank),
+                       aes(fill=Preference),
                        color=NA)
 SMap2 = SMap + scale_fill_gradient(low = 'gold',
                              high= 'black')
