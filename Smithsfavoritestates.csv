@@ -1,53 +1,53 @@
-﻿LocationType,name,Data,,,,,,
-State,Alabama,18,,,,,,
-State,Alaska,17,,,,,,
-State,Arizona,35,,,,,,
-State,Arkansas,49,,,,,,
-State,California,28,,,,,,
-State,Connecticut,23,,,,,,
-State,Colorado,30,,,,,,
-State,District of Columbia,52,,,,,,
-State,Delaware,11,,,,,,
-State,Florida,5,,,,,,
-State,Georgia,31,,,,,,
-State,Hawaii,10,,,,,,
-State,Idaho,40,,,,,,
-State,Indiana,41,,,,,,
-State,Illinois,42,,,,,,
-State,Kansas,15,,,,,,
-State,Iowa,43,,,,,,
-State,Kentucky,1,,,,,,
-State,Louisiana,2,,,,,,
-State,Maine,16,,,,,,
-State,Maryland,45,,,,,,
-State,Michigan,50,,,,,,
-State,Massachusetts,51,,,,,,
-State,Mississippi,47,,,,,,
-State,Minnesota,32,,,,,,
-State,Missouri,3,,,,,,
-State,Montana,20,,,,,,
-State,Nebraska,19,,,,,,
-State,Nevada,48,,,,,,
-State,New Jersey,46,,,,,,
-State,New Hampshire,39,,,,,,
-State,New York,4,,,,,,
-State,New Mexico,34,,,,,,
-State,North Carolina,33,,,,,,
-State,North Dakota,38,,,,,,
-State,Ohio,36,,,,,,
-State,Oklahoma,37,,,,,,
-State,Pennsylvania,8,,,,,,
-State,Oregon,9,,,,,,
-State,South Carolina,13,,,,,,
-State,Rhode Island,26,,,,,,
-State,South Dakota,44,,,,,,
-State,Tennessee,6,,,,,,
-State,Texas,22,,,,,,
-State,Utah,7,,,,,,
-State,Virginia,12,,,,,,
-State,Vermont,14,,,,,,
-State,West Virginia,21,,,,,,
-State,Washington,24,,,,,,
-State,Wisconsin,25,,,,,,
-State,Wyoming,29,,,,,,
-State,Puerto Rico,27,,,,,,
+﻿LocationType,name,Preference_Rank
+State,Alabama,18
+State,Alaska,17
+State,Arizona,35
+State,Arkansas,49
+State,California,28
+State,Connecticut,23
+State,Colorado,30
+State,District of Columbia,52
+State,Delaware,11
+State,Florida,5
+State,Georgia,31
+State,Hawaii,10
+State,Idaho,40
+State,Indiana,41
+State,Illinois,42
+State,Kansas,15
+State,Iowa,43
+State,Kentucky,1
+State,Louisiana,2
+State,Maine,16
+State,Maryland,45
+State,Michigan,50
+State,Massachusetts,51
+State,Mississippi,47
+State,Minnesota,32
+State,Missouri,3
+State,Montana,20
+State,Nebraska,19
+State,Nevada,48
+State,New Jersey,46
+State,New Hampshire,39
+State,New York,4
+State,New Mexico,34
+State,North Carolina,33
+State,North Dakota,38
+State,Ohio,36
+State,Oklahoma,37
+State,Pennsylvania,8
+State,Oregon,9
+State,South Carolina,13
+State,Rhode Island,26
+State,South Dakota,44
+State,Tennessee,6
+State,Texas,22
+State,Utah,7
+State,Virginia,12
+State,Vermont,14
+State,West Virginia,21
+State,Washington,24
+State,Wisconsin,25
+State,Wyoming,29
+State,Puerto Rico,27
