@@ -71,6 +71,17 @@ Stack1 = ActStack + scale_fill_brewer(palette="Set1")
 
 Stack2 =Stack1 + geom_text(size = 5,fontface='bold',position = position_stack(vjust = 0.5),aes(label=Dating))
 
-Stack2
+TText='Leisure Location by Relationship Status'
+SText='Source: Major US City Survey Dataset'
+
+Stack3 = Stack2 + labs(title=TText,
+                     x = NULL, 
+                     y = NULL,
+                     caption = SText)
+
+Stack4 = Stack3 + theme(plot.caption = element_text(hjust = 1), 
+                      plot.title = element_text(hjust = 0.5))
+
+Stack4
 ```
 
