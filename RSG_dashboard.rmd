@@ -100,7 +100,7 @@ T1=ggplot(data=TestMap) + geom_sf(fill='grey90',
                    by='name')
 
 SMap= T1 + geom_sf(data=MapVariables,
-                       aes(fill=Data),
+                       aes(fill=Preference_Rank),
                        color=NA)
 SMap2 = SMap + scale_fill_gradient(low = 'gold',
                              high= 'black')
@@ -113,6 +113,8 @@ SMap4 = SMap3 + labs(title="Smith Rates the U.S. States by Arbitrary Preference.
 SMap5 = SMap4 + theme(plot.caption = element_text(hjust = 1), 
                       plot.title = element_text(hjust = 0.5))
 ```
+
+
 
 Column {data-width=200}
 -----------------------------------------------------------------------
@@ -134,7 +136,7 @@ Row {data-width=400}
 -----------------------------------------------------------------------
 ### Map
 ```{r}
-SMap5
+SMap5%>%ggplotly()
 ```
 
 
