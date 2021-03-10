@@ -14,6 +14,7 @@ library(readxl)
 library(ggplot2)
 library(scales)
 library(sf)
+library(magrittr)
 
 ### Univariate
 location="https://github.com/RSGriggs/543_proj/raw/main/"
@@ -73,7 +74,7 @@ plotz5 = plotz4 + geom_hline(yintercept = 7.8,
 
 ### Bivariate
 location="https://github.com/RSGriggs/543_proj/raw/main/"
-file="activity.xls"
+file="activitya.xls"
 filelink=paste0(location,file)
 
 ActivityData=import(filelink)
@@ -82,7 +83,7 @@ summary(ActivityData)
 
 names(ActivityData)
 
-(DatingTimespent=table(ActivityData$type_character,ActivityData$dating))
+(DatingTimespent=table(ActivityData$type_character,ActivityData$datinga))
 
 (DatTime=prop.table(DatingTimespent,
                             margin = 2)%>%round(.,2))
@@ -94,44 +95,68 @@ DTP$pctCol=as.data.frame(DatTime)[,3]
 
 head(DTP)
 
-
 basea=ggplot(data=DTP, 
              aes(x=Relationship, y=pctCol,
                  fill=Location,))
 
-Dodge1= basea +  geom_bar(stat="identity",
+baseb= basea + scale_x_discrete() 
+baseb= basea + theme_classic()
+
+Dodge1= baseb +  geom_bar(stat="identity",
                             position ='dodge') 
 
-Dodge2 = Dodge1 + labs(title=NULL,
+BiTitle='Leisure Location by Relationship Status'
+
+Dodge2 = Dodge1 + labs(title=BiTitle,
                      x = "Relationship Status", 
                      y = NULL,
                      caption = NULL)
 Dodge2
 
-ActStack = Dodge2 + geom_bar(stat = "Identity",
+
+Dodge3 = Dodge2 + theme(plot.caption = element_text(hjust = 1), 
+                      plot.title = element_text(hjust = 0.5))
+
+Dodge4 = Dodge3 + theme(axis.ticks.y = element_blank(),
+                                axis.title.y = element_blank(),
+                                axis.line.y = element_blank(),
+                                axis.text.y = element_blank())
+Dodge4
+
+ActStack = Dodge4 + geom_bar(stat = "Identity",
                               position = 'stack')
 
 Stack1 = ActStack + scale_fill_brewer(palette="Set1")
 
+Stack1
+
+ActStack = baseb + theme(axis.ticks.y = element_blank(),
+                                axis.title.y = element_blank(),
+                                axis.line.y = element_blank(),
+                                axis.text.y = element_blank()) + geom_bar(stat = "Identity",
+                              position = 'stack')
+
+Stack1 = ActStack + scale_fill_brewer(palette="Set1")
+
+Stack2 =Stack1 + geom_text(size = 5,fontface='bold',position = position_stack(vjust = 0.5),aes(label=Dating))
+
 ### Map
-TestMapFile='https://github.com/RSGriggs/543_proj/raw/main/us-states.json'
+TestMapFile='https://github.com/RSGriggs/543_proj/raw/main/us-states1.json'
 
 TestMap=read_sf(TestMapFile)
 
 str(TestMap)
 
-CSVLink='https://github.com/RSGriggs/543_proj/raw/main/ChildrenLanguageAtHome.csv'
+CSVLink='https://github.com/RSGriggs/543_proj/raw/main/ChildrenLanguageAtHome1.csv'
 
 CSVData=read.csv(CSVLink)
 
 str(CSVData)
 
-
 T1=ggplot(data=TestMap) + geom_sf(fill='grey90',
                                      color=NA) + theme_classic()
 
 T1
-
 
 MapVariables=merge(TestMap,
                    CSVData, 
@@ -142,16 +167,13 @@ CMap= T1 + geom_sf(data=MapVariables,
                        color=NA)
 CMap
 
-
 CMap2 =CMap + scale_fill_gradient(low = 'yellow',
                              high= 'blue')
 CMap2
 
-
 CMap3 = CMap2 + theme_void()
 
 CMap3
-
 
 CMap4 = CMap3 + labs(title="% of Children Who Speak a Language Other than English at Home",
                      x = NULL, 
@@ -159,9 +181,10 @@ CMap4 = CMap3 + labs(title="% of Children Who Speak a Language Other than Englis
                      caption = NULL)
 CMap4
 
-
 CMap5 = CMap4 + theme(plot.caption = element_text(hjust = 1), 
                       plot.title = element_text(hjust = 0.5))
+
+CMap5
 ```
 
 Column {data-width=250}
@@ -179,7 +202,7 @@ Column {data-width=250}
 ### Bivariate
 
 ```{r}
-Stack1
+Stack2
 ```
 
 ### Map

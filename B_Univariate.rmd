@@ -57,7 +57,7 @@ plotz5 = plotz4 + geom_hline(yintercept = 7.8,
                            linetype="dashed", 
                            size=1.5,
                            alpha=0.5,
-                           color="black") + annotate("text",x=3.5, y=7.8, label= "Average Distribution",vjust= -1.5)
+                           color="black") + annotate("text",x=3.5, y=7.8, label= "Mean of Counties",vjust= -1.5)
   
 plotz5
 ```
