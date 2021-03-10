@@ -42,8 +42,6 @@ Dodge2 = Dodge1 + labs(title=BiTitle,
                      x = "Relationship Status", 
                      y = NULL,
                      caption = NULL)
-Dodge2
-
 
 Dodge3 = Dodge2 + theme(plot.caption = element_text(hjust = 1), 
                       plot.title = element_text(hjust = 0.5))
@@ -52,14 +50,11 @@ Dodge4 = Dodge3 + theme(axis.ticks.y = element_blank(),
                                 axis.title.y = element_blank(),
                                 axis.line.y = element_blank(),
                                 axis.text.y = element_blank())
-Dodge4
 
 ActStack = Dodge4 + geom_bar(stat = "Identity",
                               position = 'stack')
 
 Stack1 = ActStack + scale_fill_brewer(palette="Set1")
-
-Stack1
 
 ActStack = baseb + theme(axis.ticks.y = element_blank(),
                                 axis.title.y = element_blank(),

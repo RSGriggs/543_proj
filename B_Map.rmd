@@ -1,6 +1,7 @@
 ```{r}
 library(ggplot2)
 library(sf)
+library(plotly)
 
 TestMapFile='https://github.com/RSGriggs/543_proj/raw/main/us-states1.json'
 
@@ -17,35 +18,32 @@ str(CSVData)
 T1=ggplot(data=TestMap) + geom_sf(fill='grey90',
                                      color=NA) + theme_classic()
 
-T1
-
 MapVariables=merge(TestMap,
                    CSVData, 
                    by='name')
 
 CMap= T1 + geom_sf(data=MapVariables,
-                       aes(fill=Data),
+                       aes(fill=Percentage,
+                           text=paste("State:",name)),
                        color=NA)
-CMap
 
 CMap2 =CMap + scale_fill_gradient(low = 'yellow',
                              high= 'blue')
-CMap2
 
 CMap3 = CMap2 + theme_void()
 
-CMap3
+T1Text='US Children Who Speak a Language Other Than English'
+S1Text='Source: KIDS COUNT Data Center'
 
-CMap4 = CMap3 + labs(title="% of Children Who Speak a Language Other than English at Home",
+CMap4 = CMap3 + labs(title=T1Text,
                      x = NULL, 
                      y = NULL,
-                     caption = NULL)
-CMap4
+                     caption = S1Text)
 
 CMap5 = CMap4 + theme(plot.caption = element_text(hjust = 1), 
                       plot.title = element_text(hjust = 0.5))
 
 CMap5
+
+CMap5%>%ggplotly()
 ```
-
-
