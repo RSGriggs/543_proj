@@ -43,7 +43,8 @@ spend1=ggplot(data=SpendingFrame,
                      labs(title = "Average Spending by Venue",
                           subtitle = "Catagorical and Numerical Plot",
                           y = "Average $ Spent Per person",
-                          x = "Number of People in Party") +
+                          x = "Number of People in Party",
+                          caption = 'Survey data from major U.S. City') +
 #change color
               scale_fill_brewer(palette = "Pastel2" )
 
@@ -72,8 +73,10 @@ Kurt(actdata$timespent,na.rm = T,conf.level = 0.95, ci.type = "bca",R=2500)
 WIDTH=15
 time1= ggplot(actdata,aes(x=timespent)) +
   labs(title = "Time spent at public attractions.",
+       subtitle = 'Vertical line represents mean value.',
        y = "Percent Visitors",
-       x = "Minutes spent at attraction")
+       x = "Minutes spent at attraction",
+       caption = 'Survey data from major U.S. City')
 time2= time1 + geom_histogram(binwidth = WIDTH,aes(y=stat(density*WIDTH)))
 time3= time2 + scale_y_continuous(labels = scales::percent_format())
 MEAN=summary(actdata$timespent)[4]
@@ -97,7 +100,7 @@ T1=ggplot(data=TestMap) + geom_sf(fill='grey90',
                    by='name')
 
 SMap= T1 + geom_sf(data=MapVariables,
-                       aes(fill=Data),
+                       aes(fill=Preference),
                        color=NA)
 SMap2 = SMap + scale_fill_gradient(low = 'gold',
                              high= 'black')
@@ -106,22 +109,24 @@ SMap4 = SMap3 + labs(title="Smith Rates the U.S. States by Arbitrary Preference.
                      subtitle = 'The best are the brightest.',
                      x = NULL, 
                      y = NULL,
-                     caption = 'R. Smith Griggs')
+                     caption = 'Data created by R. Smith Griggs')
 SMap5 = SMap4 + theme(plot.caption = element_text(hjust = 1), 
                       plot.title = element_text(hjust = 0.5))
 ```
 
+
+
 Column {data-width=200}
 -----------------------------------------------------------------------
 
-### Univariate
+### Multivariate
 
 ```{r}
 spend1
 ```
 
 
-### Multivariate
+### Univariate
 
 ```{r}
 time4
@@ -131,7 +136,7 @@ Row {data-width=400}
 -----------------------------------------------------------------------
 ### Map
 ```{r}
-SMap5
+SMap5%>%ggplotly()
 ```
 
 
